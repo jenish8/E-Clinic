@@ -1,0 +1,503 @@
+<ng2-toasty [position]="position"></ng2-toasty>
+<div class="row" *ngIf="display != 'block'">
+  <div class="col-md-12 col-xl-12">
+    <app-card>
+      <form>
+        <div class="form-group row">
+          <label class="col-sm-2 col-form-label">Select DeviceId<span>*</span></label>
+          <kendo-dropdownlist
+              [data]="alldevice"
+              name='device'
+              [(ngModel)]="device_id"
+              [textField]="'device_id'"
+              [valueField]="'device_id'"
+              (valueChange)='onSubmit()'
+              required
+          >
+          </kendo-dropdownlist>
+            <span style="color: blue;text-decoration: underline;cursor: pointer;" class="col-sm-3" (click)="openModel()">Site Register</span>
+        </div>
+       </form>
+       <hr style="width:100%">
+        <div class="row">
+          <h5 class="col-sm-4">Drive Status : <span style="background-color: green;padding:5px;color: white;border-radius: 10px;">On</span></h5>
+          <h5 class="col-sm-4">Sensor Status : <span style="background-color: green;padding:5px;color: white;border-radius: 10px;">On</span></h5>
+          <h5 class="col-sm-3">IP Supply : DC</h5>
+       </div>
+       <div class="row" style="margin-top: 10px;">
+        <h5 class="col-sm-4">Error : No Error</h5>
+     </div>
+  </app-card>
+
+  </div>
+
+    <div class="col-md-12 col-xl-8">
+    <app-card [cardClass]="'counter-card-1'" [blockClass]="'card-body-big'">
+        <div class="card-status card-body bg-primary" style="border-radius: 10px;">
+          <h5 style="color: white;">Current Water Flow</h5>
+        </div>
+        <div class="card-body">
+          <zingchart-angular [config]="config" [height]="400"></zingchart-angular>
+        </div>
+    </app-card>
+  </div>
+  <!-- counter-card-1 start-->
+  <div class="col-md-12 col-xl-4">
+    <app-card [cardClass]="'counter-card-1'" [blockClass]="'card-body-big'">
+      <div class="row">
+        <div class="col-5 counter-card-icon">
+          <!-- <i class="icofont icofont-chart-histogram"></i> -->
+          <i class="icofont icofont-flash"></i>
+        </div>
+        <div class="col-6  text-right">
+          <div class="counter-card-text">
+            <h4>{{nowGenrating}} W </h4>
+            <p style="color: green;">NOW GENERATING</p>
+          </div>
+        </div>
+      </div>
+    </app-card>
+    <app-card [cardClass]="'counter-card-2'" [blockClass]="'card-body-big'">
+      <div class="row">
+        <div class="col-5 counter-card-icon">
+          <i class="icofont icofont-addons"></i>
+        </div>
+        <div class="col-6 text-right">
+          <div class="counter-card-text">
+            <h4>{{totalGenrating}} KWH</h4>
+            <p style="color:tomato">TOTAL GENERATED ENERGY</p>
+          </div>
+        </div>
+      </div>
+    </app-card>
+    <app-card [cardClass]="'counter-card-3'" [blockClass]="'card-body-big'">
+      <div class="row">
+        <div class="col-5 counter-card-icon">
+          <i class="icofont icofont-connection"></i>
+        </div>
+        <div class="col-6 text-right">
+          <div class="counter-card-text">
+            <h4>{{flowRate}} Ltr/Min</h4>
+            <p style="color:orange">FLOW RATE</p>
+          </div>
+        </div>
+      </div>
+    </app-card>
+  </div>
+
+  <div class="col-md-6 col-xl-4">
+    <app-card [cardClass]="'counter-card-1'" [blockClass]="'card-body-big'">
+      <div class="row">
+        <div class="col-12  text-center">
+          <div class="counter-card-text">
+            <h4 style="color: mediumslateblue;">Total Flow</h4>
+            <h3 style="color: mediumslateblue;">{{totalFlow}}</h3>
+          </div>
+        </div>
+      </div>
+    </app-card>
+  </div>
+  <!-- counter-card-1 end-->
+
+  <!-- counter-card-2 start -->
+  <div class="col-md-6 col-xl-4">
+    <app-card [cardClass]="'counter-card-2'" [blockClass]="'card-body-big'">
+      <div class="row">
+        <div class="col-12 text-center">
+          <div class="counter-card-text">
+            <h4 style="color:midnightblue;">Total On Time</h4>
+            <h3 style="color:midnightblue;">{{totalonTime}}</h3>
+          </div>
+        </div>
+      </div>
+    </app-card>
+  </div>
+  <!-- counter-card-2 end -->
+
+  <!-- counter-card-3 start -->
+  <div class="col-md-6 col-xl-4">
+    <app-card [cardClass]="'counter-card-3'" [blockClass]="'card-body-big'">
+      <div class="row">
+        <div class="col-12 text-center">
+          <div class="counter-card-text">
+            <h4 style="color:olive">Motor Power</h4>
+            <h3 style="color:olive">{{motorPower}} W</h3>
+          </div>
+        </div>
+      </div>
+    </app-card>
+  </div>
+
+  <div class="col-md-6 col-xl-4">
+    <app-card [cardClass]="'counter-card-1'" [blockClass]="'card-body-big'">
+      <div class="row">
+        <div class="col-12  text-center">
+          <div class="counter-card-text">
+            <h4 style="color:peru">Motor Current</h4>
+            <h3 style="color:peru">{{motorCurrent}} A</h3>
+          </div>
+        </div>
+      </div>
+    </app-card>
+  </div>
+  <!-- counter-card-1 end-->
+
+  <!-- counter-card-2 start -->
+  <div class="col-md-6 col-xl-4">
+    <app-card [cardClass]="'counter-card-2'" [blockClass]="'card-body-big'">
+      <div class="row">
+        <div class="col-12 text-center">
+          <div class="counter-card-text">
+            <h4 style="color:saddlebrown">DC Voltage</h4>
+            <h3 style="color:saddlebrown">{{dcVoltage}} V</h3>
+          </div>
+        </div>
+      </div>
+    </app-card>
+  </div>
+  <!-- counter-card-2 end -->
+
+  <!-- counter-card-3 start -->
+  <div class="col-md-6 col-xl-4">
+    <app-card [cardClass]="'counter-card-3'" [blockClass]="'card-body-big'">
+      <div class="row">
+        <div class="col-12 text-center">
+          <div class="counter-card-text">
+            <h4 style="color:tomato">DC Current</h4>
+            <h3 style="color:tomato">{{dcCurrent}} A</h3>
+          </div>
+        </div>
+      </div>
+    </app-card>
+  </div>
+
+  <div class="col-md-12 col-xl-6">
+    <app-card [cardClass]="'counter-card-2'" [blockClass]="'card-body-big'">
+      <h5 class="col-xl-9">Motor Speed</h5>
+      <span style="font-size:x-large;color:crimson">{{motorSpeed}} Hz</span>
+      <hr width="100%">
+      <div class="row" style="margin-left: 70px;">
+        <kendo-radialgauge [pointer]="{ value: motorSpeed }" style="width: 300px; height: 250px;">
+          <kendo-radialgauge-scale [minorUnit]="5" [majorUnit]="20" [max]="230">
+              <kendo-radialgauge-scale-ranges>
+                  <kendo-radialgauge-scale-range [from]="80" [to]="120" color="#ffc700">
+                  </kendo-radialgauge-scale-range>
+                  <kendo-radialgauge-scale-range [from]="120" [to]="160" color="#ff7a00">
+                  </kendo-radialgauge-scale-range>
+                  <kendo-radialgauge-scale-range [from]="160" [to]="230" color="#c20000">
+                  </kendo-radialgauge-scale-range>
+              </kendo-radialgauge-scale-ranges>
+          </kendo-radialgauge-scale>
+      </kendo-radialgauge>
+      </div>
+    </app-card>
+  </div>
+  <!-- counter-card-1 end-->
+
+  <!-- counter-card-2 start -->
+  <div class="col-md-6 col-xl-6">
+    <app-card [cardClass]="'counter-card-2'" [blockClass]="'card-body-big'">
+      <h5>MAP View</h5>
+      <hr width="100%">
+      <div class="row">
+        <agm-map [latitude]="23.389904" [longitude]="85.281738" [zoom]="12" style="height: 250px;">
+          <agm-marker
+           [latitude]="23.389904"
+           [longitude]="85.281738">
+          </agm-marker>
+        </agm-map>
+      </div>
+    </app-card>
+  </div>
+
+  <div class="col-md-12 col-xl-12">
+    <app-card [cardClass]="'counter-card-1'" [blockClass]="'card-body-big'">
+  <div class="card-status card-body bg-primary" style="border-radius: 10px;">
+    <h5 style="color: white;">{{ChartValue}}</h5>
+    <select (change)="filter1($event.target.value)" class="float-right">
+      <option value="Output Power">Output Power</option>
+      <option value="DC Current">DC Current</option>
+      <option value="DC Voltage">DC Voltage</option>
+      <option value="Motor V">Motor V</option>
+  </select>
+  </div>
+  <!-- <hr style="width:100%"> -->
+  <div class="card-body">
+    <zingchart-angular [config]="config2" [height]="400"></zingchart-angular>
+  </div>
+</app-card>
+</div>
+
+  <div class="col-sm-12">
+    <app-card [title]="'Device Data'" [classHeader]="true" [blockClass]="'table-border-style'">
+     <div class="table-responsive">
+       <kendo-grid
+       [kendoGridBinding]="gridData"
+        [height]="400" 
+        [columnMenu]="true"
+        [pageSize]="50" 
+        [resizable]="true"
+        [pageable]="{buttonCount:5,pageSizes:[50,100,500,1000]}" 
+        [filterable]="true"
+        [sortable]="true">
+        <ng-template kendoGridToolbarTemplate>
+          <button type="button"  kendoGridExcelCommand icon="file-excel" *ngIf="gridData != ''">Save as CSV</button>
+        </ng-template>
+           <kendo-grid-column width="200" field="device_type" title="Device Type"></kendo-grid-column>
+           <kendo-grid-column width="200" field="device_name" title="Device Name"></kendo-grid-column>
+           <kendo-grid-column width="200" field="device_id" title="Device Id"></kendo-grid-column>
+           <kendo-grid-column width="200" field="date" title="Date"></kendo-grid-column>
+           <kendo-grid-column width="200" field="time" title="Time"></kendo-grid-column>
+           <kendo-grid-column width="200" field="time_zone" title="TimeZone"></kendo-grid-column>
+           <kendo-grid-column width="200" field="latitude" title="Latitude"></kendo-grid-column>
+           <kendo-grid-column width="200" field="longitude" title="Longitude"></kendo-grid-column>
+           <kendo-grid-column width="200" field="software_ver" title="Software ver"></kendo-grid-column>
+           <kendo-grid-column width="200" field="signal_strength" title="Single Strength"></kendo-grid-column>
+           <kendo-grid-column width="200" field="motor_speed" title="Motor Speed"></kendo-grid-column>
+           <kendo-grid-column width="200" field="dv_v" title="DV"></kendo-grid-column>
+           <kendo-grid-column width="200" field="dc_c" title="DC"></kendo-grid-column>
+           <kendo-grid-column width="200" field="motor_v" title="Motor Voltage"></kendo-grid-column>
+           <kendo-grid-column width="200" field="motor_c" title="Motor Current"></kendo-grid-column>
+           <kendo-grid-column width="200" field="current_flow" title="Current Flow"></kendo-grid-column>
+           <kendo-grid-column width="200" field="inst_power" title="Inst Power"></kendo-grid-column>
+           <kendo-grid-column width="200" field="total_energy" title="Total Enrgy"></kendo-grid-column>
+           <kendo-grid-column width="200" field="total_on_time" title="Total On Time"></kendo-grid-column>
+           <kendo-grid-column width="200" field="status" title="Status"></kendo-grid-column>
+           <kendo-grid-column width="200" field="fault_status" title="Fault Status"></kendo-grid-column>
+           <kendo-grid-column width="200" field="current_sensor_status" title="Current Sensor"></kendo-grid-column>
+           <kendo-grid-column width="200" field="fault_code" title="Fault Code"></kendo-grid-column>
+           <kendo-grid-column width="200" field="total_flow" title="Total Flow"></kendo-grid-column>
+           <kendo-grid-column width="200" field="total_off_time" title="Total Off Time"></kendo-grid-column>
+           <kendo-grid-column width="200" field="temp" title="Temp"></kendo-grid-column>
+           <kendo-grid-column width="200" field="speed_status" title="Speed Status"></kendo-grid-column>
+           <kendo-grid-column width="200" field="output_power" title="Output Power"></kendo-grid-column>
+           <!-- <ng-template kendoGridDetailTemplate let-dataItem>
+             <section *ngIf="dataItem" class="row">
+                 <div class="col-md-3"><strong>Customer Id :-</strong> {{dataItem.customer_id}}</div>
+                 <div class="col-md-3"><strong>Name :-</strong> {{dataItem.customer_name}}</div>
+                 <div class="col-md-3"><strong>Company :-</strong> {{dataItem.company_name}}</div>
+                 <div class="col-md-3"><strong>Landmark :-</strong> {{dataItem.landmark}}</div>
+                 <div class="col-md-3"><strong>Address :-</strong> {{dataItem.address}}</div>
+                 <div class="col-md-3"><strong>Phone No :-</strong> {{dataItem.phone}}</div>
+                 <div class="col-md-3"><strong>Landline :-</strong> {{dataItem.landline}}</div>
+                 <div class="col-md-3"><strong>Whatsapp :-</strong> {{dataItem.whatsapp}}</div>
+                 <div class="col-md-3"><strong>Industry :-</strong> {{dataItem.industry_cat}}</div>
+                 <div class="col-md-3"><strong>Territory :-</strong> {{dataItem.territory_cat}}</div>
+                 <div class="col-md-3"><strong>Email Id :-</strong> {{dataItem.email1}}</div>
+                 <div class="col-md-3"><strong>Status :-</strong>  
+                  <span style="color: red;" *ngIf="dataItem.customer_status == 0">Pending</span>
+                   <span style="color: green;" *ngIf="dataItem.customer_status == 1">Active</span></div>
+             </section>
+             </ng-template> -->
+             <kendo-grid-excel fileName="devicedata.xlsx" #excelexport></kendo-grid-excel>
+       </kendo-grid>
+     </div>
+   </app-card>
+   </div>
+</div>
+<div *ngIf="loading == true" class="k-i-loading"></div>
+
+
+<div class="row" *ngIf="display == 'block' ">
+  <div class="col-sm-12">
+      <app-card [title]="'Customer Details'">
+  <form [formGroup]="siteAddEdit" (ngSubmit)="onRegister()">
+    <div class="form-group row">
+       <label class="col-sm-2 col-form-label">First Name</label>
+       <div class="col-sm-4">
+        <input kendoTextBox class="form-control" formControlName="Fname" placeholder="Enter First Name"/>
+       </div>
+
+       <label class="col-sm-2 col-form-label">Middle Name</label>
+       <div class="col-sm-4">
+        <input kendoTextBox class="form-control" formControlName="Mname" placeholder="Enter Middle Name"/>
+       </div>
+     </div>
+
+     <div class="form-group row">
+      <label class="col-sm-2 col-form-label">Last Name</label>
+      <div class="col-sm-4">
+       <input kendoTextBox class="form-control" formControlName="lname" placeholder="Enter Last Name"/>
+      </div>
+
+      <label class="col-sm-2 col-form-label">Address</label>
+      <div class="col-sm-4">
+          <textarea type="text" class="form-control"  formControlName="address" placeholder="Enter Address"></textarea>
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <label class="col-sm-2 col-form-label">Phone No</label>
+      <div class="col-sm-4">
+       <input kendoTextBox class="form-control" formControlName="pno" placeholder="Enter Phone No"/>
+      </div>
+
+      <label class="col-sm-2 col-form-label">Adhar No</label>
+      <div class="col-sm-4">
+       <input kendoTextBox class="form-control" formControlName="adno" placeholder="Enter Adhar No"/>
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <label class="col-sm-2 col-form-label">Email</label>
+      <div class="col-sm-4">
+       <input kendoTextBox class="form-control" formControlName="email" placeholder="Enter Email"/>
+      </div>
+
+      <label class="col-sm-2 col-form-label">State<span>*</span></label>
+      <div class="col-sm-4">
+       <input kendoTextBox class="form-control" formControlName="State" placeholder="Enter State Name"
+       [ngClass]="{'is-invalid': isSubmitted && f.State.errors}" />
+     <div *ngIf="isSubmitted && f.State.errors" class="invalid-feedback">
+       <div *ngIf="f.State.errors.required">This field is required</div>
+     </div>
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <label class="col-sm-2 col-form-label">District<span>*</span></label>
+      <div class="col-sm-4">
+       <input kendoTextBox class="form-control" formControlName="District" placeholder="Enter District Name"
+       [ngClass]="{'is-invalid': isSubmitted && f.District.errors}" />
+     <div *ngIf="isSubmitted && f.District.errors" class="invalid-feedback">
+       <div *ngIf="f.District.errors.required">This field is required</div>
+     </div>
+      </div>
+    </div>
+
+    <h5 style="margin-top: 25px;">Controller Details</h5>
+    <hr style="width:100%">
+    <div class="form-group row">
+      <label class="col-sm-2 col-form-label">SR. No</label>
+      <div class="col-sm-4">
+       <input kendoTextBox class="form-control" formControlName="Srno" placeholder="Enter SR. No"/>
+      </div>
+
+      <label class="col-sm-2 col-form-label">Installation Location</label>
+      <div class="col-sm-4">
+       <input kendoTextBox class="form-control" formControlName="inl" placeholder="Enter Installation Location"/>
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <label class="col-sm-2 col-form-label">VFD Menufacture</label>
+      <div class="col-sm-4">
+       <input kendoTextBox class="form-control" formControlName="vfd" placeholder="Enter VFD Menufacture"/>
+      </div>
+
+      <label class="col-sm-2 col-form-label">VFD SR. No</label>
+      <div class="col-sm-4">
+       <input kendoTextBox class="form-control" formControlName="vfdsrno" placeholder="Enter VFD Sr No"/>
+      </div>
+    </div>
+
+    <h5 style="margin-top: 25px;">Motor & Pump Details</h5>
+    <hr style="width:100%">
+    <div class="form-group row">
+      <label class="col-sm-2 col-form-label">Motor Type</label>
+      <div class="col-sm-4">
+       <input kendoTextBox class="form-control" formControlName="mtype" placeholder="Enter Motor Type"/>
+      </div>
+
+      <label class="col-sm-2 col-form-label">Motor Category</label>
+      <div class="col-sm-4">
+       <input kendoTextBox class="form-control" formControlName="moc" placeholder="Enter Motor Category"/>
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <label class="col-sm-2 col-form-label">Motor SL No</label>
+      <div class="col-sm-4">
+       <input kendoTextBox class="form-control" formControlName="mosl" placeholder="Enter Motor Sl No"/>
+      </div>
+
+      <label class="col-sm-2 col-form-label">Pump SL No</label>
+      <div class="col-sm-4">
+       <input kendoTextBox class="form-control" formControlName="puno" placeholder="Enter Pump Sl No"/>
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <label class="col-sm-2 col-form-label">Motor H.P</label>
+      <div class="col-sm-4">
+       <input kendoTextBox class="form-control" formControlName="mhp" placeholder="Enter Motor H.P"/>
+      </div>
+
+      <label class="col-sm-2 col-form-label">Motor Head Size</label>
+      <div class="col-sm-4">
+       <input kendoTextBox class="form-control" formControlName="mhz" placeholder="Enter Motor Head size"/>
+      </div>
+    </div>
+
+    <h5 style="margin-top: 25px;">RMS Details</h5>
+    <hr style="width:100%">
+    <div class="form-group row">
+      <label class="col-sm-2 col-form-label">IMEI No</label>
+      <div class="col-sm-4">
+       <input kendoTextBox class="form-control" formControlName="imeino" placeholder="Enter IMEI No"/>
+      </div>
+
+      <label class="col-sm-2 col-form-label">RMS Phone No</label>
+      <div class="col-sm-4">
+       <input kendoTextBox class="form-control" formControlName="rmspno" placeholder="Enter RMS Phone No"/>
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <label class="col-sm-2 col-form-label">Device ID</label>
+      <div class="col-sm-4">
+       <input kendoTextBox class="form-control" [(ngModel)]="device_id.device_id" formControlName="device_id" placeholder="Enter Device Id"/>
+      </div>
+    </div>
+
+    <h5 style="margin-top: 25px;">Site Details</h5>
+    <hr style="width:100%">
+    <div class="form-group row">
+      <label class="col-sm-2 col-form-label">Concern Person Name</label>
+      <div class="col-sm-4">
+       <input kendoTextBox class="form-control" formControlName="conpn" placeholder="Enter Concern Person Name"/>
+      </div>
+
+      <label class="col-sm-2 col-form-label">Name Of Block</label>
+      <div class="col-sm-4">
+       <input kendoTextBox class="form-control" formControlName="nob" placeholder="Enter Name Of Block"/>
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <label class="col-sm-2 col-form-label">Gram Panchayat</label>
+      <div class="col-sm-4">
+       <input kendoTextBox class="form-control" formControlName="gp" placeholder="Enter Gram Panchayat Name"/>
+      </div>
+
+      <label class="col-sm-2 col-form-label">Name Of Village</label>
+      <div class="col-sm-4">
+       <input kendoTextBox class="form-control" formControlName="nov" placeholder="Enter Name Of Village"/>
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <label class="col-sm-2 col-form-label">Site Name</label>
+      <div class="col-sm-4">
+       <input kendoTextBox class="form-control" formControlName="sname" placeholder="Enter Site Name"/>
+      </div>
+
+      <label class="col-sm-2 col-form-label">Population</label>
+      <div class="col-sm-4">
+       <input kendoTextBox class="form-control" formControlName="pop" placeholder="Enter Population"/>
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <label class="col-sm-2 col-form-label">Site Unique Id</label>
+      <div class="col-sm-4">
+       <input kendoTextBox class="form-control" formControlName="sunq" placeholder="Enter Site Unique Id"/>
+      </div>
+    </div>
+   </form>
+   <hr style="width:100%">
+     <button class="btn btn-primary" (click)="onRegister()"><i class="icofont icofont-eye"></i>Save</button>
+   <button class="btn btn-default btn-outline-default" style="margin-left:5px" (click)="onCloseHandled()">Clear</button>
+      </app-card>
+  </div>      
+</div>

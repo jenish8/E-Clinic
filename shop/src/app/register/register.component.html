@@ -1,0 +1,100 @@
+<!-- BEGIN: Content-->
+<body style="background-image: url('assets/app-assets/images/eclinicsystems-banner.jpg');background-size: cover;">
+<div class="app-content content">
+    <div class="content-overlay"></div>
+    <div class="header-navbar-shadow"></div>
+    <div class="content-wrapper">
+        <div class="content-header row">
+        </div>
+        <div class="content-body">
+            <section class="row flexbox-container">
+                <div class="col-xl-8 col-11 d-flex justify-content-center">
+                    <div class="card bg-authentication rounded-0 mb-0">
+                        <div class="row m-0">
+                            <div class="col-lg-6 d-lg-block d-none text-center align-self-center px-1 py-0">
+                                <img src="assets/app-assets/images/pages/login.png" alt="branding logo">
+                            </div>
+                            <div class="col-lg-6 col-12 p-0">
+                                <div class="card rounded-0 mb-0 px-2">
+
+                                    <div class="card-header pb-1">
+                                        <div class="card-title">
+                                            <h4 class="mb-0" style="font-size: x-large;font-weight: bolder;">Register Form</h4>
+                                        </div>
+                                    </div>
+                                    <div class="card-content">
+                                        <div class="card-body pt-1">
+                                            <form [formGroup]="UserAddEdit" #authForm="ngForm" name="userForm" (ngSubmit)="onSubmit(authForm)">
+                                                <div class="form-label-group">
+                                                    <input type="text" id="inputName" class="form-control" formControlName="fname" placeholder="First Name"ngModel name="fname" [ngClass]="{'is-invalid': isSubmitted && f.fname.errors}" >
+                                                    <div *ngIf="isSubmitted && f.fname.errors" class="invalid-feedback">
+                                                        <div *ngIf="f.fname.errors.required">This field is required</div>
+                                                      </div>
+                                                    <label for="inputName" style="font-size: small;font-weight: bolder;">First Name</label>
+                                                </div>
+                                                <div class="form-label-group">
+                                                    <input type="text" id="inputName" class="form-control" formControlName="lname" placeholder="Last Name" ngModel name="lname" [ngClass]="{'is-invalid': isSubmitted && f.lname.errors}" >
+                                                    <div *ngIf="isSubmitted && f.lname.errors" class="invalid-feedback">
+                                                        <div *ngIf="f.lname.errors.required">This field is required</div>
+                                                      </div>
+                                                    <label for="inputName" style="font-size: small;font-weight: bolder;">Last Name</label>
+                                                </div>
+                                                <div class="form-label-group">
+                                                    <textarea id="inputName" class="form-control" placeholder="Address" formControlName="address" ngModel name="address" [ngClass]="{'is-invalid': isSubmitted && f.address.errors}" ></textarea>
+                                                    <div *ngIf="isSubmitted && f.address.errors" class="invalid-feedback">
+                                                        <div *ngIf="f.address.errors.required">This field is required</div>
+                                                      </div>
+                                                    <label for="inputName" style="font-size: small;font-weight: bolder;">Address</label>
+                                                </div>
+                                                <div class="form-label-group">
+                                                    <input type="text" id="inputName" class="form-control" placeholder="Contact Number" formControlName="contact_no" ngModel name="contact_no" [pattern]="mobNumberPattern" [ngClass]="{'is-invalid': isSubmitted && f.contact_no.errors}" >
+                                                    <div *ngIf="isSubmitted && f.contact_no.errors" class="invalid-feedback">
+                                                        <div *ngIf="f.contact_no.errors.required">This field is required</div>
+                                                        <div *ngIf="f.contact_no.errors.pattern">Please enter valid contact-no</div>
+                                                      </div>
+                                                    <label for="inputName" style="font-size: small;font-weight: bolder;">Contact No</label>
+                                                </div>
+                                                <div class="form-label-group">
+                                                    <input type="text" id="inputName" class="form-control" placeholder="Email Id" formControlName="email" ngModel name="email" [ngClass]="{'is-invalid': isSubmitted && f.email.errors}" >
+                                                    <div *ngIf="isSubmitted && f.email.errors" class="invalid-feedback">
+                                                        <div *ngIf="f.email.errors.required">This field is required</div>
+                                                        <div *ngIf="f.email.errors.email">Please enter valid email-id</div> 
+                                                      </div>
+                                                      
+                                                      <label for="inputName" style="font-size: small;font-weight: bolder;">Email Id</label>
+                                                </div>
+                                                <div class="form-label-group">
+                                                    <input type="text" id="inputName" class="form-control" placeholder="User Name" formControlName="uname" ngModel name="uname" [ngClass]="{'is-invalid': isSubmitted && f.uname.errors}" >
+                                                    <div *ngIf="isSubmitted && f.uname.errors" class="invalid-feedback">
+                                                        <div *ngIf="f.uname.errors.required">This field is required</div>
+                                                      </div>
+                                                    <label for="inputName" style="font-size: small;font-weight: bolder;">User Name</label>
+                                                </div>
+                                                <div class="form-label-group">
+                                                    <input type="password" id="inputName" class="form-control" placeholder="Password" formControlName="password" ngModel name="password" ng-minlength="8" ng-maxlength="24" [ngClass]="{'is-invalid': isSubmitted && f.password.errors}" >
+                                                    <div *ngIf="isSubmitted && f.password.errors" class="invalid-feedback">
+                                                        <div *ngIf="f.password.errors.required">This field is required</div>
+                                                        <span ng-show="userForm.password.$dirty &amp;&amp; userForm.password.$error.minLength" class="text-danger">Please use a password of at least 8 characters</span>
+                                                        
+                                                      </div>
+                                                    <label for="inputName" style="font-size: small;font-weight: bolder;">Password</label>
+                                                </div>
+
+
+                                                <button type="submit" style="font-size: larger;font-weight: bolder;" class="btn btn-primary float-right btn-inline">Submit</button>
+                                            </form>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </div>
+</div>
+</body>
+<!-- END: Content-->

@@ -1,0 +1,51 @@
+    <!-- BEGIN: Content-->
+    <body style="background-image: url('assets/app-assets/images/eclinicsystems-banner.jpg');background-size: cover;">
+<div class="app-content content" >
+    <div class="content-overlay"></div>
+    <div class="header-navbar-shadow"></div>
+    <div class="content-wrapper">
+        <div class="content-header row">
+        </div>
+        <div class="content-body">
+            <section class="row flexbox-container">
+                <div class="col-xl-8 col-11 d-flex justify-content-center">
+                    <div class="card bg-authentication rounded-0 mb-0">
+                        <div class="row m-0">
+                            <div class="col-lg-6 d-lg-block d-none text-center align-self-center px-1 py-0">
+                                <img src="assets/app-assets/images/pages/login.png" alt="branding logo">
+                            </div>
+                            <div class="col-lg-6 col-12 p-0">
+                                <div class="card rounded-0 mb-0 px-2">
+
+                                    <div class="card-header pb-1">
+                                        <div class="card-title">
+                                            <h4 class="mb-0" style="font-weight: bolder;font-size: x-large;">Forgot Password</h4>
+                                        </div>
+                                    </div>
+                                    <div class="card-content">
+                                        <div class="card-body pt-1">
+                                            <form [formGroup]="UserAddEdit" #authForm="ngForm" (ngSubmit)="onSubmit(authForm)">
+                                                <div class="form-label-group">
+                                                    <input type="text" id="inputName" class="form-control" formControlName="username" placeholder="Username" ngModel name="username"  [ngClass]="{'is-invalid': isSubmitted && f.username.errors}">
+                                                    <div *ngIf="isSubmitted && f.username.errors" class="invalid-feedback">
+                                                        <div *ngIf="f.username.errors.required">This field is required</div>
+                                                      </div>
+                                                    <label for="inputName" style="font-weight: bolder;font-size: large;">Username</label>
+                                                </div>
+                                                <button type="submit" style="font-weight: bolder;font-size: x-large;" class="btn btn-primary float btn-inline">Verify</button>
+                                            </form>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </div>
+</div>
+    </body>
+<!-- END: Content-->

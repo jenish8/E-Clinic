@@ -1,0 +1,291 @@
+<ng2-toasty [position]="position"></ng2-toasty>
+<div class="row" *ngIf="display == 'none' ">
+	<div class="col-sm-12">
+    <app-card [title]="'Dep & Lov Table'" [classHeader]="true" [blockClass]="'table-border-style'">
+      <div class="table-responsive">
+        <kendo-grid
+        [kendoGridBinding]="gridData"
+         [height]="450" 
+         [columnMenu]="true"
+         [pageSize]="50" 
+         [resizable]="true"
+         [pageable]="{buttonCount:5,pageSizes:[50,100,500,1000]}" 
+         [filterable]="true"
+         [sortable]="true">
+            <ng-template kendoGridToolbarTemplate>
+              <button type="button"  kendoGridExcelCommand icon="file-excel" *ngIf="gridData != ''">Save as CSV</button>
+              <button class="btn btn-primary"  (click)="saveCustomer()"><i class="icofont icofont-pencil-alt-1"></i>Add Dep & Lov</button>
+            </ng-template>
+            <kendo-grid-column width="100" field="id" title="Id"></kendo-grid-column>
+            <kendo-grid-column width="150" field="orderStatus" title="Order Status"></kendo-grid-column>
+            <kendo-grid-column width="200" field="customerType" title="Customer Type"></kendo-grid-column>
+            <kendo-grid-column width="200" field="paymentTerms" title="Payment Terms"></kendo-grid-column>
+            <kendo-grid-column width="200" field="delivertyTerms" title="Delivery Terms"></kendo-grid-column>
+            <kendo-grid-column width="200" field="ceurrency" title="Ceurrency"></kendo-grid-column>
+            <kendo-grid-column width="200" field="region" title="Region"></kendo-grid-column>
+            <kendo-grid-column width="200" field="packaging" title="Packaging"></kendo-grid-column>
+            <kendo-grid-column width="200" field="partsStatus" title="Parts Status"></kendo-grid-column>
+            <kendo-grid-column width="200" field="uom" title="UOM"></kendo-grid-column>
+            <kendo-grid-column width="200" field="productGroup" title="Product Group"></kendo-grid-column>
+            <kendo-grid-column width="200" field="productCategory" title="Product Category"></kendo-grid-column>
+            <kendo-grid-column width="200" field="subCategory" title="Sub Category"></kendo-grid-column>
+            <kendo-grid-column width="200" field="hsnCode" title="HSN Code"></kendo-grid-column>
+            <kendo-grid-column width="200" field="country" title="Country"></kendo-grid-column>
+            <kendo-grid-column width="200" field="positionCategory" title="Position Category"></kendo-grid-column>
+            <kendo-grid-column width="200" field="departmentCategory" title="Department Category"></kendo-grid-column>
+            <kendo-grid-column width="200" field="courierCompanyName" title="Courier ComapanyName"></kendo-grid-column>
+            <kendo-grid-column width="200" field="Warehouse" title="WareHouse"></kendo-grid-column>
+            <kendo-grid-column width="200" field="ffAccount" title="FF Account"></kendo-grid-column>
+            <kendo-grid-column width="200" field="tax" title="Tax"></kendo-grid-column>
+            <kendo-grid-column width="200" field="taxPercentage" title="Tax Percentage"></kendo-grid-column>
+            <kendo-grid-column width="200" field="groupOfCompany" title="Group Of Company"></kendo-grid-column>
+            <kendo-grid-column width="200" field="createdAt" title="CreatedAt">
+              <ng-template kendoGridCellTemplate let-data>
+                <span>{{data.createdAt| date:'dd/MM/yyyy'}}</span>
+            </ng-template>
+            </kendo-grid-column>
+            <kendo-grid-column width="200" field="updatedAt" title="UpdatedAt">
+              <ng-template kendoGridCellTemplate let-data>
+                <span>{{data.updatedAt| date:'dd/MM/yyyy'}}</span>
+            </ng-template>
+            </kendo-grid-column>
+            <kendo-grid-command-column width="150" title="Actions">
+                <ng-template kendoGridCellTemplate let-data>
+                    <button  (click)="editCustomer(data.id)" class="btn-primary" >Edit</button>
+                    <button  (click)="deleteCustomer(data.id)" class="btn" style="background-color:orangered;margin-left: 5px;padding: 0.1rem 0.5rem !important;color: white;" >Delete</button>
+                </ng-template>
+            </kendo-grid-command-column>
+            <!-- <ng-template kendoGridDetailTemplate let-dataItem>
+              <section *ngIf="dataItem" class="row">
+                  <div class="col-md-3"><strong>Customer Id :-</strong> {{dataItem.customer_id}}</div>
+                  <div class="col-md-3"><strong>Name :-</strong> {{dataItem.customer_name}}</div>
+                  <div class="col-md-3"><strong>Company :-</strong> {{dataItem.company_name}}</div>
+                  <div class="col-md-5"><strong>Landmark :-</strong> {{dataItem.landmark}}</div>
+                  <div class="col-md-3"><strong>Phone No :-</strong> {{dataItem.phone}}</div>
+                  <div class="col-md-3"><strong>Landline :-</strong> {{dataItem.landline}}</div>
+                  <div class="col-md-3"><strong>Whatsapp :-</strong> {{dataItem.whatsapp}}</div>
+                  <div class="col-md-3"><strong>Industry :-</strong> {{dataItem.industry_cat}}</div>
+                  <div class="col-md-3"><strong>Territory :-</strong> {{dataItem.territory_cat}}</div>
+                  <div class="col-md-3"><strong>Email Id :-</strong> {{dataItem.email1}}</div>
+                  <div class="col-md-3"><strong>Status :-</strong>  
+                   <span style="color: red;" *ngIf="dataItem.customer_status == 0">Pending</span>
+                    <span style="color: green;" *ngIf="dataItem.customer_status == 1">Active</span></div>
+                    <div class="col-md-5"><strong>Address :-</strong> {{dataItem.address}}</div>
+              </section>
+              </ng-template> -->
+              <kendo-grid-excel fileName="Dep&Lov.xlsx" #excelexport>
+               </kendo-grid-excel>
+        </kendo-grid>
+      </div>
+    </app-card>
+  </div>
+  <div *ngIf="loading == true" class="k-i-loading"></div>
+</div>
+
+<div class="row" *ngIf="display == 'block' ">
+    <div class="col-sm-12">
+        <app-card [title]="'Dep & Lov Details'">
+    <form [formGroup]="customerAddEdit">
+      <div class="form-group row">
+         <label class="col-sm-2 col-form-label">Order Status</label>
+         <div class="col-sm-4">
+          <input kendoTextBox class="form-control" formControlName="orderStatus" placeholder="Enter Order Status" [ngClass]="{'is-invalid': isSubmitted && f.orderStatus.errors}" />
+          <div *ngIf="isSubmitted && f.orderStatus.errors" class="invalid-feedback">
+            <div *ngIf="f.orderStatus.errors.required">This field is required</div>
+          </div>
+         </div>
+
+         <label class="col-sm-2 col-form-label">Customer Type</label>
+         <div class="col-sm-4">
+          <input kendoTextBox class="form-control" formControlName="customerType" placeholder="Enter CUstomer Type"[ngClass]="{'is-invalid': isSubmitted && f.customerType.errors}" />
+          <div *ngIf="isSubmitted && f.customerType.errors" class="invalid-feedback">
+            <div *ngIf="f.customerType.errors.required">This field is required</div>
+          </div>
+         </div>
+       </div>
+
+       <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Payment Terms</label>
+        <div class="col-sm-4">
+         <input kendoTextBox class="form-control" formControlName="paymentTerms" placeholder="Enter Payment Terms"[ngClass]="{'is-invalid': isSubmitted && f.paymentTerms.errors}" />
+         <div *ngIf="isSubmitted && f.paymentTerms.errors" class="invalid-feedback">
+           <div *ngIf="f.paymentTerms.errors.required">This field is required</div>
+         </div>
+        </div>
+
+        <label class="col-sm-2 col-form-label">Delivery Terms</label>
+        <div class="col-sm-4">
+            <input type="text" class="form-control"  formControlName="delivertyTerms" placeholder="Enter Delivery Terms" [ngClass]="{'is-invalid': isSubmitted && f.delivertyTerms.errors}" />
+            <div *ngIf="isSubmitted && f.delivertyTerms.errors" class="invalid-feedback">
+              <div *ngIf="f.delivertyTerms.errors.required">This field is required</div>
+            </div>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Ceurrency</label>
+        <div class="col-sm-4">
+         <input kendoTextBox class="form-control" formControlName="ceurrency" placeholder="Enter Ceurrency"[ngClass]="{'is-invalid': isSubmitted && f.ceurrency.errors}" />
+         <div *ngIf="isSubmitted && f.ceurrency.errors" class="invalid-feedback">
+           <div *ngIf="f.ceurrency.errors.required">This field is required</div>
+         </div>
+        </div>
+
+        <label class="col-sm-2 col-form-label">Region</label>
+        <div class="col-sm-4">
+         <input kendoTextBox class="form-control" formControlName="region" placeholder="Enter Region"[ngClass]="{'is-invalid': isSubmitted && f.region.errors}" />
+         <div *ngIf="isSubmitted && f.region.errors" class="invalid-feedback">
+           <div *ngIf="f.region.errors.required">This field is required</div>
+         </div>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Packaging</label>
+        <div class="col-sm-4">
+         <input kendoTextBox class="form-control" formControlName="packaging" placeholder="Enter Packaging"[ngClass]="{'is-invalid': isSubmitted && f.packaging.errors}" />
+         <div *ngIf="isSubmitted && f.packaging.errors" class="invalid-feedback">
+           <div *ngIf="f.packaging.errors.required">This field is required</div>
+         </div>
+        </div>
+
+        <label class="col-sm-2 col-form-label">PartsStatus<span>*</span></label>
+        <div class="col-sm-4">
+         <input kendoTextBox class="form-control" formControlName="partsStatus" placeholder="Enter PartsStatus" [ngClass]="{'is-invalid': isSubmitted && f.partsStatus.errors}" />
+       <div *ngIf="isSubmitted && f.partsStatus.errors" class="invalid-feedback">
+         <div *ngIf="f.partsStatus.errors.required">This field is required</div>
+       </div>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-sm-2 col-form-label">UOM<span>*</span></label>
+        <div class="col-sm-4">
+         <input kendoTextBox class="form-control" formControlName="uom" placeholder="Enter UOM" [ngClass]="{'is-invalid': isSubmitted && f.uom.errors}" />
+       <div *ngIf="isSubmitted && f.uom.errors" class="invalid-feedback">
+         <div *ngIf="f.uom.errors.required">This field is required</div>
+       </div>
+        </div>
+        <label class="col-sm-2 col-form-label">Group Of Company</label>
+        <div class="col-sm-4">
+         <input kendoTextBox class="form-control" formControlName="groupOfCompany" placeholder="Enter Group Of Company"[ngClass]="{'is-invalid': isSubmitted && f.groupOfCompany.errors}" />
+         <div *ngIf="isSubmitted && f.groupOfCompany.errors" class="invalid-feedback">
+           <div *ngIf="f.groupOfCompany.errors.required">This field is required</div>
+         </div>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Product Group</label>
+        <div class="col-sm-4">
+         <input kendoTextBox class="form-control" formControlName="productGroup" placeholder="Enter Product Group"[ngClass]="{'is-invalid': isSubmitted && f.productGroup.errors}" />
+         <div *ngIf="isSubmitted && f.productGroup.errors" class="invalid-feedback">
+           <div *ngIf="f.productGroup.errors.required">This field is required</div>
+         </div>
+        </div>
+
+        <label class="col-sm-2 col-form-label">Product Category</label>
+        <div class="col-sm-4">
+         <input kendoTextBox class="form-control" formControlName="productCategory" placeholder="Enter Product Category"[ngClass]="{'is-invalid': isSubmitted && f.productCategory.errors}" />
+         <div *ngIf="isSubmitted && f.productCategory.errors" class="invalid-feedback">
+           <div *ngIf="f.productCategory.errors.required">This field is required</div>
+         </div>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Sub Category</label>
+        <div class="col-sm-4">
+         <input kendoTextBox class="form-control" formControlName="subCategory" placeholder="Enter Sub Category"[ngClass]="{'is-invalid': isSubmitted && f.subCategory.errors}" />
+         <div *ngIf="isSubmitted && f.subCategory.errors" class="invalid-feedback">
+           <div *ngIf="f.subCategory.errors.required">This field is required</div>
+         </div>
+        </div>
+
+        <label class="col-sm-2 col-form-label">HSN Code</label>
+        <div class="col-sm-4">
+         <input kendoTextBox class="form-control" formControlName="hsnCode" placeholder="Enter HSN Code"[ngClass]="{'is-invalid': isSubmitted && f.hsnCode.errors}" />
+         <div *ngIf="isSubmitted && f.hsnCode.errors" class="invalid-feedback">
+           <div *ngIf="f.hsnCode.errors.required">This field is required</div>
+         </div>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Country</label>
+        <div class="col-sm-4">
+         <input kendoTextBox class="form-control" formControlName="country" placeholder="Enter Country"[ngClass]="{'is-invalid': isSubmitted && f.country.errors}" />
+         <div *ngIf="isSubmitted && f.country.errors" class="invalid-feedback">
+           <div *ngIf="f.country.errors.required">This field is required</div>
+         </div>
+        </div>
+
+        <label class="col-sm-2 col-form-label">Position Category</label>
+        <div class="col-sm-4">
+         <input kendoTextBox class="form-control" formControlName="positionCategory" placeholder="Enter Position Category"[ngClass]="{'is-invalid': isSubmitted && f.positionCategory.errors}" />
+         <div *ngIf="isSubmitted && f.positionCategory.errors" class="invalid-feedback">
+           <div *ngIf="f.positionCategory.errors.required">This field is required</div>
+         </div>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Department Category</label>
+        <div class="col-sm-4">
+         <input kendoTextBox class="form-control" formControlName="departmentCategory" placeholder="Enter Department Category"[ngClass]="{'is-invalid': isSubmitted && f.departmentCategory.errors}" />
+         <div *ngIf="isSubmitted && f.departmentCategory.errors" class="invalid-feedback">
+           <div *ngIf="f.departmentCategory.errors.required">This field is required</div>
+         </div>
+        </div>
+
+        <label class="col-sm-2 col-form-label">Courier CompanyName</label>
+        <div class="col-sm-4">
+         <input kendoTextBox class="form-control" formControlName="courierCompanyName" placeholder="Enter Courier Company Name"[ngClass]="{'is-invalid': isSubmitted && f.courierCompanyName.errors}" />
+         <div *ngIf="isSubmitted && f.courierCompanyName.errors" class="invalid-feedback">
+           <div *ngIf="f.courierCompanyName.errors.required">This field is required</div>
+         </div>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Warehouse</label>
+        <div class="col-sm-4">
+         <input kendoTextBox class="form-control" formControlName="Warehouse" placeholder="Enter WareHouse"[ngClass]="{'is-invalid': isSubmitted && f.Warehouse.errors}" />
+         <div *ngIf="isSubmitted && f.Warehouse.errors" class="invalid-feedback">
+           <div *ngIf="f.Warehouse.errors.required">This field is required</div>
+         </div>
+        </div>
+
+        <label class="col-sm-2 col-form-label">FF Account</label>
+        <div class="col-sm-4">
+         <input kendoTextBox class="form-control" formControlName="ffAccount" placeholder="Enter FF Account"[ngClass]="{'is-invalid': isSubmitted && f.ffAccount.errors}" />
+         <div *ngIf="isSubmitted && f.ffAccount.errors" class="invalid-feedback">
+           <div *ngIf="f.ffAccount.errors.required">This field is required</div>
+         </div>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Tax</label>
+        <div class="col-sm-4">
+         <input kendoTextBox class="form-control" formControlName="tax" placeholder="Enter Tax"[ngClass]="{'is-invalid': isSubmitted && f.tax.errors}" />
+         <div *ngIf="isSubmitted && f.tax.errors" class="invalid-feedback">
+           <div *ngIf="f.tax.errors.required">This field is required</div>
+         </div>
+        </div>
+
+        <label class="col-sm-2 col-form-label">Tax Percentage</label>
+        <div class="col-sm-4">
+         <input kendoTextBox class="form-control" formControlName="taxPercentage" placeholder="Enter Tax Percentage"[ngClass]="{'is-invalid': isSubmitted && f.taxPercentage.errors}" />
+         <div *ngIf="isSubmitted && f.taxPercentage.errors" class="invalid-feedback">
+           <div *ngIf="f.taxPercentage.errors.required">This field is required</div>
+         </div>
+        </div>
+      </div>
+     </form>
+     <hr style="width:100%">
+       <button class="btn btn-primary" (click)="onSubmit()"><i class="icofont icofont-eye"></i>Save</button>
+     <button class="btn btn-default btn-outline-default" style="margin-left:5px" (click)="onCloseHandled()">Close</button>
+        </app-card>
+    </div>      
+</div>

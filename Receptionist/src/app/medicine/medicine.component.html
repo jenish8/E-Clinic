@@ -1,0 +1,129 @@
+<ng2-toasty [position]="position"></ng2-toasty>
+<div class="row" *ngIf="display == 'none' ">
+
+    <div class="col-md-6 col-xl-4">
+        <app-card [cardClass]="'counter-card-3'" [blockClass]="'card-body-big'">
+            <div class="row">
+                <div class="col-6 counter-card-icon">
+                    <i class="icofont icofont-chart-line"></i>
+                </div>
+                <div class="col-6 text-right">
+                    <div class="counter-card-text">
+                        <h3>{{ totaluser }}</h3>
+                        <p>Total Patient </p>
+                    </div>
+                </div>
+            </div>
+        </app-card>
+    </div>
+
+    <div class="col-md-12 col-xl-4">
+        <app-card [cardClass]="'counter-card-1'" [blockClass]="'card-body-big'">
+            <div class="row">
+                <div class="col-6 counter-card-icon">
+                    <i class="icofont icofont-chart-histogram"></i>
+                </div>
+                <div class="col-6  text-right">
+                    <div class="counter-card-text">
+                        <h3>{{ onPecent }}</h3>
+                        <p>Pending Appointment</p>
+                    </div>
+                </div>
+            </div>
+        </app-card>
+    </div>
+
+    <div class="col-md-6 col-xl-4">
+        <app-card [cardClass]="'counter-card-2'" [blockClass]="'card-body-big'">
+            <div class="row">
+                <div class="col-6 counter-card-icon">
+                    <i class="icofont icofont-chart-line-alt"></i>
+                </div>
+                <div class="col-6 text-right">
+                    <div class="counter-card-text">
+                        <h3>{{ duser }}</h3>
+                        <p>Appointment Arrive</p>
+                    </div>
+                </div>
+            </div>
+        </app-card>
+    </div>
+    <div class="col-sm-12">
+        <app-card [title]="'Wating Patient Time'" [classHeader]="true" [blockClass]="'table-border-style'">
+            <div class="table-responsive">
+                <kendo-grid [kendoGridBinding]="gridData" [height]="450" [columnMenu]="true" [pageSize]="50" [resizable]="true" [pageable]="{buttonCount:5,pageSizes:[50,100,500,1000]}" [filterable]="true" [sortable]="true">
+                    <ng-template kendoGridToolbarTemplate>
+                        <button type="button" kendoGridExcelCommand icon="file-excel" *ngIf="gridData != ''">Save as CSV</button>
+                        <button class="btn btn-primary" (click)="saveMedicine()"><i class="icofont icofont-pencil-alt-1"></i>Add Waiting Time</button>
+                    </ng-template>
+                    <kendo-grid-column width="150" field="wtime" title="Wating Time"></kendo-grid-column>
+
+
+                    <kendo-grid-column width="200" field="createdAt" title="CreatedAt">
+                        <ng-template kendoGridCellTemplate let-data>
+                            <span>{{data.createdAt| date:'dd/MM/yyyy'}}</span>
+                        </ng-template>
+                    </kendo-grid-column>
+                    <kendo-grid-column width="200" field="updatedAt" title="UpdatedAt">
+                        <ng-template kendoGridCellTemplate let-data>
+                            <span>{{data.updatedAt| date:'dd/MM/yyyy'}}</span>
+                        </ng-template>
+                    </kendo-grid-column>
+                    <kendo-grid-command-column width="150" title="Actions">
+                        <ng-template kendoGridCellTemplate let-data>
+                            <button (click)="editMedicine(data.id)" class="btn-primary">Edit</button>
+
+                        </ng-template>
+                    </kendo-grid-command-column>
+                    <!-- <ng-template kendoGridDetailTemplate let-dataItem>
+              <section *ngIf="dataItem" class="row">
+                  <div class="col-md-3"><strong>Medicine Id :-</strong> {{dataItem.Medicine_id}}</div>
+                  <div class="col-md-3"><strong>Name :-</strong> {{dataItem.Medicine_name}}</div>
+                  <div class="col-md-3"><strong>Company :-</strong> {{dataItem.company_name}}</div>
+                  <div class="col-md-5"><strong>Landmark :-</strong> {{dataItem.landmark}}</div>
+                  <div class="col-md-3"><strong>Phone No :-</strong> {{dataItem.phone}}</div>
+                  <div class="col-md-3"><strong>Landline :-</strong> {{dataItem.landline}}</div>
+                  <div class="col-md-3"><strong>Whatsapp :-</strong> {{dataItem.whatsapp}}</div>
+                  <div class="col-md-3"><strong>Industry :-</strong> {{dataItem.industry_cat}}</div>
+                  <div class="col-md-3"><strong>Territory :-</strong> {{dataItem.territory_cat}}</div>
+                  <div class="col-md-3"><strong>Email Id :-</strong> {{dataItem.email1}}</div>
+                  <div class="col-md-3"><strong>Status :-</strong>  
+                   <span style="color: red;" *ngIf="dataItem.Medicine_status == 0">Pending</span>
+                    <span style="color: green;" *ngIf="dataItem.Medicine_status == 1">Active</span></div>
+                    <div class="col-md-5"><strong>Address :-</strong> {{dataItem.address}}</div>
+              </section>
+              </ng-template> -->
+                    <kendo-grid-excel fileName="Medicine.xlsx" #excelexport>
+                    </kendo-grid-excel>
+                </kendo-grid>
+            </div>
+        </app-card>
+    </div>
+    <div *ngIf="loading == true" class="k-i-loading"></div>
+</div>
+
+<div class="row" *ngIf="display == 'block' ">
+    <div class="col-sm-12">
+        <app-card [title]="'Medicine Details'">
+            <form [formGroup]="MedicineAddEdit">
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Wating Time<span style="color: red;font-size: large;"> *</span></label>
+                    <div class="col-sm-4">
+                        <input kendoTextBox class="form-control" formControlName="wtime" placeholder="Enter Medicine Name" [ngClass]="{'is-invalid': isSubmitted && f.wtime.errors}" />
+                        <div *ngIf="isSubmitted && f.wtime.errors" class="invalid-feedback">
+                            <div *ngIf="f.wtime.errors.required">This field is required</div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+
+
+            </form>
+            <hr style="width:100%">
+            <button class="btn btn-primary" (click)="onSubmit()"><i class="icofont icofont-eye"></i>Save</button>
+            <button class="btn btn-default btn-outline-default" style="margin-left:5px" (click)="onCloseHandled()">Close</button>
+        </app-card>
+    </div>
+</div>

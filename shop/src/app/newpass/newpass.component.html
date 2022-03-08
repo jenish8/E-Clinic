@@ -1,0 +1,62 @@
+    <!-- BEGIN: Content-->
+    <body style="background-image: url('assets/app-assets/images/eclinicsystems-banner.jpg');background-size: cover;">
+<div class="app-content content" >
+    <div class="content-overlay"></div>
+    <div class="header-navbar-shadow"></div>
+    <div class="content-wrapper">
+        <div class="content-header row">
+        </div>
+        <div class="content-body">
+            <section class="row flexbox-container">
+                <div class="col-xl-8 col-11 d-flex justify-content-center">
+                    <div class="card bg-authentication rounded-0 mb-0">
+                        <div class="row m-0">
+                            <div class="col-lg-6 d-lg-block d-none text-center align-self-center px-1 py-0">
+                                <img src="assets/app-assets/images/pages/login.png" alt="branding logo">
+                            </div>
+                            <div class="col-lg-6 col-12 p-0">
+                                <div class="card rounded-0 mb-0 px-2">
+
+                                    <div class="card-header pb-1">
+                                        <div class="card-title">
+                                            <h4 class="mb-0" style="font-size: x-large;font-weight: bolder;">Forgot Password</h4>
+                                        </div>
+                                    </div>
+                                    <div class="card-content">
+                                        <div class="card-body pt-1">
+                                            <form [formGroup]="UserAddEdit" #authForm="ngForm" name="userForm" (ngSubmit)="onSubmit(authForm)">
+                                                <div class="form-label-group">
+                                                    <input type="password" id="inputName" class="form-control" formControlName="newpass" placeholder="New Password" ngModel name="newpass" ng-minlength="8" ng-maxlength="24" [ngClass]="{'is-invalid': isSubmitted && f.newpass.errors}">
+                                                    <div *ngIf="isSubmitted && f.newpass.errors" class="invalid-feedback">
+                                                        <div *ngIf="f.newpass.errors.required">This field is required</div>
+                                                        
+                                                        <span ng-show="userForm.confirmpass.$dirty &amp;&amp; userForm.confirmpass.$error.minLength" class="text-danger">Please use a password of at least 8 characters</span>
+                                                      </div>
+                                                    <label for="inputName" style="font-size: large;font-weight: bolder;">New Password</label>
+                                                </div>
+                                                <div class="form-label-group">
+                                                    <input type="password" id="inputName" class="form-control" formControlName="confirmpass" placeholder="Confirm Password" ngModel name="confirmpass" ng-minlength="8" ng-maxlength="24" [ngClass]="{'is-invalid': isSubmitted && f.confirmpass.errors}">
+                                                    <div *ngIf="isSubmitted && f.confirmpass.errors" class="invalid-feedback">
+                                                        <div *ngIf="f.confirmpass.errors.required">This field is required</div>
+                                                        
+                                                        <span ng-show="userForm.confirmpass.$dirty &amp;&amp; userForm.confirmpass.$error.minLength" class="text-danger">Please use a password of at least 8 characters</span>
+                                                      </div>
+                                                    <label for="inputName" style="font-size: large;font-weight: bolder;">Confirm Password</label>
+                                                </div>
+                                                <button type="submit" style="font-size: x-large;font-weight: bolder;" class="btn btn-primary float btn-inline">Change</button>
+                                            </form>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </div>
+</div>
+</body>
+<!-- END: Content-->

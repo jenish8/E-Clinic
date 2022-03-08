@@ -1,0 +1,143 @@
+<ng2-toasty [position]="position"></ng2-toasty>
+<div class="row">
+  <div class="col-md-12 col-xl-12">
+    <app-card>
+      <form>
+        <div class="form-group row">
+          <label class="col-sm-3 col-form-label">Select State<span>*</span></label>
+          <label class="col-sm-3 col-form-label">Select District<span>*</span></label>
+          <label class="col-sm-3 col-form-label">Select DeviceId<span>*</span></label>
+          <label class="col-sm-3 col-form-label">Select Date<span>*</span></label>
+        </div>
+        <!-- <hr style="width:100%"> -->
+        <div class="form-group row">
+          <div class="col-sm-3">
+              <kendo-dropdownlist
+              [data]="allstate"
+              name='state'
+              [(ngModel)]="state_id"
+              [textField]="'state'"
+              [valueField]="'state'"
+              (valueChange)='onChangeState()'
+              required
+          >
+          </kendo-dropdownlist>
+          </div>
+          <div class="col-sm-3">
+              <kendo-dropdownlist
+              [data]="alldist"
+              name='dist'
+              [(ngModel)]="dist_id"
+              [textField]="'district'"
+              [valueField]="'district'"
+              (valueChange)='onChangeDistrict()'
+              required
+          >
+          </kendo-dropdownlist>
+          </div>
+          <div class="col-sm-3">
+            <kendo-dropdownlist
+              [data]="alldevice"
+              name='device'
+              [(ngModel)]="device_id"
+              [textField]="'device_id'"
+              [valueField]="'device_id'"
+              (valueChange)='onSubmit()'
+              required
+          >
+          </kendo-dropdownlist>
+          </div>
+          <div class="col-sm-3">
+            <kendo-datepicker
+                 [(value)]="value"
+                 (valueChange)="onSubmit()">
+             </kendo-datepicker>
+          </div>
+        </div>
+       </form>
+  </app-card>
+ </div>
+
+ 
+ <div class="col-md-12 col-xl-12">
+    <app-card [cardClass]="'counter-card-1'" [blockClass]="'card-body-big'">
+  <div class="card-status card-body bg-primary" style="border-radius: 10px;">
+    <h5 style="color: white;">{{ChartValue}}</h5>
+    <select (change)="filter1($event.target.value)" class="float-right">
+      <option value="Output Power">Output Power</option>
+      <option value="DC Current">DC Current</option>
+      <option value="DC Voltage">DC Voltage</option>
+      <option value="Motor V">Motor V</option>
+  </select>
+  </div>
+  <!-- <hr style="width:100%"> -->
+  <div class="card-body">
+    <zingchart-angular [config]="config2" [height]="400"></zingchart-angular>
+  </div>
+</app-card>
+
+<app-card [title]="'Device Data'" [classHeader]="true" [blockClass]="'table-border-style'">
+    <div class="table-responsive">
+      <kendo-grid
+      [kendoGridBinding]="gridData"
+       [height]="400" 
+       [columnMenu]="true"
+       [pageSize]="50" 
+       [resizable]="true"
+       [pageable]="{buttonCount:5,pageSizes:[50,100,500,1000]}" 
+       [filterable]="true"
+       [sortable]="true">
+       <ng-template kendoGridToolbarTemplate>
+        <button type="button"  kendoGridExcelCommand icon="file-excel" *ngIf="gridData != ''">Save as CSV</button>
+      </ng-template>
+          <kendo-grid-column width="200" field="device_type" title="Device Type"></kendo-grid-column>
+          <kendo-grid-column width="200" field="device_name" title="Device Name"></kendo-grid-column>
+          <kendo-grid-column width="200" field="device_id" title="Device Id"></kendo-grid-column>
+          <kendo-grid-column width="200" field="date" title="Date"></kendo-grid-column>
+          <kendo-grid-column width="200" field="time" title="Time"></kendo-grid-column>
+          <kendo-grid-column width="200" field="time_zone" title="TimeZone"></kendo-grid-column>
+          <kendo-grid-column width="200" field="latitude" title="Latitude"></kendo-grid-column>
+          <kendo-grid-column width="200" field="longitude" title="Longitude"></kendo-grid-column>
+          <kendo-grid-column width="200" field="software_ver" title="Software ver"></kendo-grid-column>
+          <kendo-grid-column width="200" field="signal_strength" title="Single Strength"></kendo-grid-column>
+          <kendo-grid-column width="200" field="motor_speed" title="Motor Speed"></kendo-grid-column>
+          <kendo-grid-column width="200" field="dv_v" title="DV"></kendo-grid-column>
+          <kendo-grid-column width="200" field="dc_c" title="DC"></kendo-grid-column>
+          <kendo-grid-column width="200" field="motor_v" title="Motor Voltage"></kendo-grid-column>
+          <kendo-grid-column width="200" field="motor_c" title="Motor Current"></kendo-grid-column>
+          <kendo-grid-column width="200" field="current_flow" title="Current Flow"></kendo-grid-column>
+          <kendo-grid-column width="200" field="inst_power" title="Inst Power"></kendo-grid-column>
+          <kendo-grid-column width="200" field="total_energy" title="Total Enrgy"></kendo-grid-column>
+          <kendo-grid-column width="200" field="total_on_time" title="Total On Time"></kendo-grid-column>
+          <kendo-grid-column width="200" field="status" title="Status"></kendo-grid-column>
+          <kendo-grid-column width="200" field="fault_status" title="Fault Status"></kendo-grid-column>
+          <kendo-grid-column width="200" field="current_sensor_status" title="Current Sensor"></kendo-grid-column>
+          <kendo-grid-column width="200" field="fault_code" title="Fault Code"></kendo-grid-column>
+          <kendo-grid-column width="200" field="total_flow" title="Total Flow"></kendo-grid-column>
+          <kendo-grid-column width="200" field="total_off_time" title="Total Off Time"></kendo-grid-column>
+          <kendo-grid-column width="200" field="temp" title="Temp"></kendo-grid-column>
+          <kendo-grid-column width="200" field="speed_status" title="Speed Status"></kendo-grid-column>
+          <kendo-grid-column width="200" field="output_power" title="Output Power"></kendo-grid-column>
+          <!-- <ng-template kendoGridDetailTemplate let-dataItem>
+            <section *ngIf="dataItem" class="row">
+                <div class="col-md-3"><strong>Customer Id :-</strong> {{dataItem.customer_id}}</div>
+                <div class="col-md-3"><strong>Name :-</strong> {{dataItem.customer_name}}</div>
+                <div class="col-md-3"><strong>Company :-</strong> {{dataItem.company_name}}</div>
+                <div class="col-md-3"><strong>Landmark :-</strong> {{dataItem.landmark}}</div>
+                <div class="col-md-3"><strong>Address :-</strong> {{dataItem.address}}</div>
+                <div class="col-md-3"><strong>Phone No :-</strong> {{dataItem.phone}}</div>
+                <div class="col-md-3"><strong>Landline :-</strong> {{dataItem.landline}}</div>
+                <div class="col-md-3"><strong>Whatsapp :-</strong> {{dataItem.whatsapp}}</div>
+                <div class="col-md-3"><strong>Industry :-</strong> {{dataItem.industry_cat}}</div>
+                <div class="col-md-3"><strong>Territory :-</strong> {{dataItem.territory_cat}}</div>
+                <div class="col-md-3"><strong>Email Id :-</strong> {{dataItem.email1}}</div>
+                <div class="col-md-3"><strong>Status :-</strong>  
+                 <span style="color: red;" *ngIf="dataItem.customer_status == 0">Pending</span>
+                  <span style="color: green;" *ngIf="dataItem.customer_status == 1">Active</span></div>
+            </section>
+            </ng-template> -->
+            <kendo-grid-excel fileName="historical.xlsx" #excelexport></kendo-grid-excel>
+      </kendo-grid>
+    </div>
+  </app-card>
+</div>

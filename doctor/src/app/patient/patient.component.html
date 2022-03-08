@@ -1,0 +1,65 @@
+<ng2-toasty [position]="position"></ng2-toasty>
+<div class="row" *ngIf="display == 'none' ">
+    <div class="col-sm-12">
+        <app-card [title]="'Patient Appointment'" [classHeader]="true" [blockClass]="'table-border-style'">
+            <div class="table-responsive">
+                <kendo-grid [kendoGridBinding]="gridData" [height]="450" [columnMenu]="true" [pageSize]="50" [resizable]="true" [pageable]="{buttonCount:5,pageSizes:[50,100,500,1000]}" [filterable]="true" [sortable]="true">
+                    <ng-template kendoGridToolbarTemplate>
+                        <button type="button" kendoGridExcelCommand icon="file-excel" *ngIf="gridData != ''">Save as CSV</button>
+                        
+                    </ng-template>
+
+                    <kendo-grid-column width="150" field="PatientId" title="Patient Name"></kendo-grid-column>
+                    <kendo-grid-column width="200" field="AppointmentDate" title="Appointment Date"></kendo-grid-column>
+                    <kendo-grid-column width="200" field="AppointmentTime" title="Appointment Time"></kendo-grid-column>
+                    <kendo-grid-column width="200" field="AppointmentTakenDate" title="Appointment Type"></kendo-grid-column>
+                    <kendo-grid-column width="200" field="Status" title="Status"></kendo-grid-column>
+                    <kendo-grid-column width="200" field="Prescription" title="Prescription">
+                        <ng-template kendoGridCellTemplate let-data >
+                            <span><a style="color:darkblue;font-weight: bolder;text-decoration: underline;" href="{{ data.Prescription }}" target="_blank">Show Prescription</a></span>
+                        </ng-template>
+                    </kendo-grid-column>
+                    <kendo-grid-column width="200" field="createdAt" title="CreatedAt">
+                        <ng-template kendoGridCellTemplate let-data>
+                            <span>{{data.createdAt| date:'dd/MM/yyyy'}}</span>
+                        </ng-template>
+                    </kendo-grid-column>
+                    <kendo-grid-column width="200" field="updatedAt" title="UpdatedAt">
+                        <ng-template kendoGridCellTemplate let-data>
+                            <span>{{data.updatedAt| date:'dd/MM/yyyy'}}</span>
+                        </ng-template>
+                    </kendo-grid-column>
+                    <kendo-grid-command-column width="250" title="Actions">
+                        <ng-template kendoGridCellTemplate let-data>
+                            <button (click)="deletePatient(data.id)" class="btn" style="background-color:orangered;margin-left: 5px;padding: 0.1rem 0.5rem !important;color: white;">Del</button>
+                            <button class="btn btn-primary" (click)="savePatient(data.id)"><i class="icofont icofont-pencil-alt-1"></i>Add Prescription</button>
+                        </ng-template>
+                    </kendo-grid-command-column>
+                    <kendo-grid-excel fileName="Patient.xlsx" #excelexport>
+                    </kendo-grid-excel>
+                </kendo-grid>
+            </div>
+        </app-card>
+    </div>
+    <div *ngIf="loading == true" class="k-i-loading"></div>
+</div>
+
+<div class="row" *ngIf="display == 'block' ">
+    <div class="col-sm-12">
+        <app-card [title]="'Patient Details'">
+            <form [formGroup]="PatientAddEdit">
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Prescription<span style="color: red;font-size: large;"> *</span></label>
+                    <div class="col-sm-4">
+                        <input type="file" placeholder="Enter Last Name" (change)="onFileChange($event)" />
+                    </div>
+                </div>
+
+
+            </form>
+            <hr style="width:100%">
+            <button class="btn btn-primary" (click)="onSubmit()"><i class="icofont icofont-eye"></i>Save</button>
+            <button class="btn btn-default btn-outline-default" style="margin-left:5px" (click)="onCloseHandled()">Close</button>
+        </app-card>
+    </div>
+</div>
